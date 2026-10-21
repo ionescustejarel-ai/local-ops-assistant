@@ -37,3 +37,15 @@ def test_websocket_requires_the_token():
             pass
     with client.websocket_connect(f"/ws/events?token={server.TOKEN}") as ws:
         assert "alerts" in ws.receive_json()
+
+
+def test_token_file_location_and_contents(tmp_path, monkeypatch):
+    monkeypatch.setenv("JARVIS_TOKEN_FILE", str(tmp_path / "t" / "session.token"))
+    p = server.token_path()
+    assert p == tmp_path / "t" / "session.token"
+    server.write_token(p, "abc")
+    server.write_token(p, "def")          # truncates, never appends
+    assert p.read_text(encoding="utf-8") == "def"
+    monkeypatch.delenv("JARVIS_TOKEN_FILE")
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    assert server.token_path() == tmp_path / "jarvis" / "session.token"

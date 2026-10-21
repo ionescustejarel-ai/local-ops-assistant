@@ -16,7 +16,7 @@ reachable from the network.
 Loopback is not enough on its own: any web page open in a browser on this
 machine can also send requests to 127.0.0.1. So every /api route (except
 /api/health) and the WebSocket require a per-launch token. The backend writes
-it to data/session.token at startup; the Electron main process reads that file
+it to a per-user file at startup (token_path()); the Electron main process reads that file
 and hands it to the renderer through the preload bridge. A web page cannot
 read local files, so it cannot get the token.
 """
@@ -25,6 +25,7 @@ from __future__ import annotations
 import asyncio
 import hmac
 import logging
+import os
 import secrets
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -42,8 +43,25 @@ log = logging.getLogger("jarvis")
 CFG = load_config()
 SNAP = Snapshot(CFG)
 TOKEN = secrets.token_urlsafe(32)
-TOKEN_FILE = Path(CFG["_root"]) / "data" / "session.token"
 OPEN_PATHS = {"/api/health"}
+
+
+def token_path() -> Path:
+    """Per-user location, so the OS restricts who can read it: %LOCALAPPDATA% on Windows
+    (ACL = current user), ~/.local/state elsewhere. Must match app/electron/main.ts."""
+    if os.environ.get("JARVIS_TOKEN_FILE"):
+        return Path(os.environ["JARVIS_TOKEN_FILE"])
+    base = os.environ.get("LOCALAPPDATA") or Path.home() / ".local" / "state"
+    return Path(base) / "jarvis" / "session.token"
+
+
+def write_token(path: Path, token: str) -> None:
+    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # owner-only from creation (POSIX); chmod again in case the file existed with looser bits
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(token)
+    os.chmod(path, 0o600)
 
 
 def token_ok(supplied: str | None) -> bool:
@@ -52,8 +70,7 @@ def token_ok(supplied: str | None) -> bool:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
-    TOKEN_FILE.write_text(TOKEN, encoding="utf-8")
+    write_token(token_path(), TOKEN)
     await SNAP.start()
     from . import voice_routes  # noqa: F401  (registers /api/stt, /api/tts, /api/ask; loads whisper lazily)
     await voice_routes.startup(app, CFG)

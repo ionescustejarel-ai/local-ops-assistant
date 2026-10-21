@@ -7,6 +7,7 @@
  */
 import { app, BrowserWindow, globalShortcut, Menu, Tray, nativeImage, ipcMain, shell } from "electron";
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,7 +16,9 @@ const DEV_URL = process.env.JARVIS_DEV_URL;
 const HOTKEY = "Control+Alt+J";
 // per-launch API token written by the backend (jarvis/server.py); re-read on every request
 // because the backend may restart after the window opened
-const TOKEN_FILE = process.env.JARVIS_TOKEN_FILE ?? path.join(__dirname, "..", "..", "data", "session.token");
+// same per-user location as token_path() in jarvis/server.py
+const TOKEN_FILE = process.env.JARVIS_TOKEN_FILE
+  ?? path.join(process.env.LOCALAPPDATA ?? path.join(homedir(), ".local", "state"), "jarvis", "session.token");
 
 function readToken(): string {
   try {
