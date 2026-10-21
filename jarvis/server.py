@@ -12,14 +12,24 @@ Routes
   POST /api/tts             {"text": ...} -> audio/mpeg                  (voice/tts.py)
 Loopback only: the brain can read the vault and the DB, so this must never be
 reachable from the network.
+
+Loopback is not enough on its own: any web page open in a browser on this
+machine can also send requests to 127.0.0.1. So every /api route (except
+/api/health) and the WebSocket require a per-launch token. The backend writes
+it to data/session.token at startup; the Electron main process reads that file
+and hands it to the renderer through the preload bridge. A web page cannot
+read local files, so it cannot get the token.
 """
 from __future__ import annotations
 
 import asyncio
+import hmac
 import logging
+import secrets
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -31,10 +41,19 @@ log = logging.getLogger("jarvis")
 
 CFG = load_config()
 SNAP = Snapshot(CFG)
+TOKEN = secrets.token_urlsafe(32)
+TOKEN_FILE = Path(CFG["_root"]) / "data" / "session.token"
+OPEN_PATHS = {"/api/health"}
+
+
+def token_ok(supplied: str | None) -> bool:
+    return hmac.compare_digest(supplied or "", TOKEN)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
+    TOKEN_FILE.write_text(TOKEN, encoding="utf-8")
     await SNAP.start()
     from . import voice_routes  # noqa: F401  (registers /api/stt, /api/tts, /api/ask; loads whisper lazily)
     await voice_routes.startup(app, CFG)
@@ -43,8 +62,19 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Jarvis", lifespan=lifespan)
+# "null" is the origin of the Electron window (loaded from file://); the token below is the real gate
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "null"],
                    allow_methods=["*"], allow_headers=["*"])
+
+
+@app.middleware("http")
+async def require_token(request: Request, call_next):
+    path = request.url.path
+    if request.method == "OPTIONS" or not path.startswith("/api/") or path in OPEN_PATHS:
+        return await call_next(request)
+    if not token_ok(request.headers.get("x-jarvis-token")):
+        return JSONResponse({"error": "missing or wrong X-Jarvis-Token"}, status_code=403)
+    return await call_next(request)
 
 
 @app.get("/api/snapshot")
@@ -70,6 +100,9 @@ async def health() -> JSONResponse:
 
 @app.websocket("/ws/events")
 async def ws_events(ws: WebSocket) -> None:
+    if not token_ok(ws.query_params.get("token")):
+        await ws.close(code=1008)  # policy violation; before accept, so the handshake is refused
+        return
     await ws.accept()
     q = SNAP.subscribe()
     try:

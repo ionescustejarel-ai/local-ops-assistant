@@ -32,7 +32,9 @@ log = logging.getLogger("jarvis.brain")
 READ_TOOLS = [
     "Read", "Grep", "Glob", "LS",
     "Bash(git log*)", "Bash(git status*)", "Bash(git diff*)", "Bash(ls*)", "Bash(dir*)", "Bash(cat*)",
-    "Bash(head*)", "Bash(tail*)", "Bash(docker ps*)", "Bash(nvidia-smi*)", "Bash(curl*)",
+    # no curl/network tools: mail and calendar text reach the prompt, and an injected
+    # instruction must not be able to send data anywhere; service health is in the snapshot
+    "Bash(head*)", "Bash(tail*)", "Bash(docker ps*)", "Bash(nvidia-smi*)",
     "mcp__mcp-obsidian-advanced__*", "mcp__postgres__*",
 ]
 

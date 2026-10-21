@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld("jarvis", {
     return () => ipcRenderer.removeListener("ptt:toggle", handler);
   },
   info: () => ipcRenderer.invoke("app:info"),
+  token: () => ipcRenderer.invoke("app:token"),
   show: () => ipcRenderer.send("app:show"),
 });

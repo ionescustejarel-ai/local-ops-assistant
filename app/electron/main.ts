@@ -6,12 +6,24 @@
  * main only relays the hotkey over IPC.
  */
 import { app, BrowserWindow, globalShortcut, Menu, Tray, nativeImage, ipcMain, shell } from "electron";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEV_URL = process.env.JARVIS_DEV_URL;
 const HOTKEY = "Control+Alt+J";
+// per-launch API token written by the backend (jarvis/server.py); re-read on every request
+// because the backend may restart after the window opened
+const TOKEN_FILE = process.env.JARVIS_TOKEN_FILE ?? path.join(__dirname, "..", "..", "data", "session.token");
+
+function readToken(): string {
+  try {
+    return readFileSync(TOKEN_FILE, "utf8").trim();
+  } catch {
+    return "";
+  }
+}
 
 let win: BrowserWindow | null = null;
 let tray: Tray | null = null;
@@ -129,6 +141,7 @@ if (!gotLock) {
     });
     if (!ok) console.error(`could not register ${HOTKEY}`);
     ipcMain.handle("app:info", () => ({ hotkey: HOTKEY, version: app.getVersion(), dev: Boolean(DEV_URL) }));
+    ipcMain.handle("app:token", () => readToken());
     ipcMain.on("app:show", showWindow);
   });
   app.on("will-quit", () => globalShortcut.unregisterAll());

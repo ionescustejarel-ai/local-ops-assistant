@@ -48,6 +48,7 @@ declare global {
     jarvis?: {
       onPttToggle: (cb: () => void) => () => void;
       info: () => Promise<{ hotkey: string; version: string; dev: boolean }>;
+      token: () => Promise<string>;
       show: () => void;
     };
   }

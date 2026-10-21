@@ -8,3 +8,4 @@ app/dist/
 app/dist-electron/
 app/release/
 demo/workspace/_inbox/jarvis-conversations/
+app/tsconfig.tsbuildinfo

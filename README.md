@@ -13,7 +13,8 @@ I run scheduled data pipelines, Docker services, local AI models and several sid
 ## What is interesting about it
 
 - **Most questions never reach the LLM.** A deterministic fast path (`jarvis/fastpath.py`) answers the everyday questions — what is red, what is waiting on me, deadlines, what's on tomorrow — straight from the snapshot, in well under a second and at no cost. Anything it does not fully cover ("why", "explain", or a part no rule matches) goes to Claude. A wrong fast answer is worse than a slow one, so the matcher refuses partial matches.
-- **The LLM can look but not touch.** The brain is Claude Code in headless mode (`claude -p --output-format stream-json`) with `--strict-mcp-config`: only a notes server and a read-only database server are allowed, and edit/write/agent tools are explicitly disallowed. The backend listens on loopback only.
+- **The LLM can look but not touch.** The brain is Claude Code in headless mode (`claude -p --output-format stream-json`) with `--strict-mcp-config`: only a notes server and a read-only database server are allowed, edit/write/agent tools are explicitly disallowed, and there is no network tool — mail and calendar text reach the prompt, so an injected instruction must have nowhere to send data.
+- **Loopback is not treated as a security boundary.** Any web page open in a browser can send requests to `127.0.0.1`, so every API route and the WebSocket require a per-launch token. The backend writes it to a local file; the Electron main process reads it and passes it to the window through the preload bridge. A web page cannot read that file.
 - **One failing source never takes the board down.** Each collector (`jarvis/collectors/*`) is a pure parser plus a small `fetch()`, run on its own interval. A failure is recorded next to the last good value instead of replacing it.
 - **Alerts are plain rules over the snapshot** (`jarvis/alerts.py`): failed or stale scheduled tasks, watched containers down, backup failed or too old, services not answering, uncommitted work in repos that should be clean, decisions waiting on me for more than a week.
 - **Voice runs locally.** Speech-to-text is faster-whisper large-v3 on the GPU (≈1–1.5 s for a sentence); replies are spoken sentence by sentence with edge-tts while the rest of the answer is still streaming.
@@ -58,7 +59,7 @@ Platform notes: the scheduled-task collector uses PowerShell's `Get-ScheduledTas
 ## Tests
 
 ```bash
-uv run pytest            # 57 tests: parsers on captured outputs, alert rules, fast path, brain prompt
+uv run pytest            # 67 tests: parsers, alert rules, fast path, brain prompt, API/WebSocket token check
 cd app && npx vitest run # 7 tests: SSE parsing, formatting, alert bar
 ```
 

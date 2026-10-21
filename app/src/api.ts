@@ -3,20 +3,33 @@ import type { BrainEvent, Snapshot } from "./types";
 export const API = "http://127.0.0.1:8020";
 const WS = "ws://127.0.0.1:8020/ws/events";
 
+/** Per-launch backend token, read fresh each time (the backend may have restarted). */
+async function token(): Promise<string> {
+  try {
+    return (await window.jarvis?.token()) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+async function authed(extra: Record<string, string> = {}): Promise<Record<string, string>> {
+  return { ...extra, "X-Jarvis-Token": await token() };
+}
+
 /** Reconnecting WebSocket feed of the snapshot. Returns an unsubscribe function. */
 export function subscribeSnapshot(onSnapshot: (s: Snapshot) => void, onStatus: (connected: boolean) => void): () => void {
   let ws: WebSocket | null = null;
   let closed = false;
   let retry = 1000;
-  const connect = () => {
+  const connect = async () => {
     if (closed) return;
-    ws = new WebSocket(WS);
+    ws = new WebSocket(`${WS}?token=${encodeURIComponent(await token())}`);
     ws.onopen = () => { retry = 1000; onStatus(true); };
     ws.onmessage = (ev) => { try { onSnapshot(JSON.parse(ev.data) as Snapshot); } catch { /* ignore bad frame */ } };
-    ws.onclose = () => { onStatus(false); if (!closed) { setTimeout(connect, retry); retry = Math.min(retry * 2, 15000); } };
+    ws.onclose = () => { onStatus(false); if (!closed) { setTimeout(() => void connect(), retry); retry = Math.min(retry * 2, 15000); } };
     ws.onerror = () => ws?.close();
   };
-  connect();
+  void connect();
   return () => { closed = true; ws?.close(); };
 }
 
@@ -35,7 +48,7 @@ export function parseSse(buffer: string): { events: BrainEvent[]; rest: string }
 
 export async function* ask(text: string, newSession = false, signal?: AbortSignal): AsyncGenerator<BrainEvent> {
   const res = await fetch(`${API}/api/ask`, {
-    method: "POST", headers: { "Content-Type": "application/json" },
+    method: "POST", headers: await authed({ "Content-Type": "application/json" }),
     body: JSON.stringify({ text, new_session: newSession }), signal,
   });
   if (!res.ok || !res.body) { yield { type: "error", text: `backend ${res.status}` }; return; }
@@ -55,23 +68,23 @@ export async function* ask(text: string, newSession = false, signal?: AbortSigna
 export async function transcribe(blob: Blob): Promise<{ text: string; took_s: number; audio_s: number }> {
   const fd = new FormData();
   fd.append("audio", blob, "ptt.webm");
-  const res = await fetch(`${API}/api/stt`, { method: "POST", body: fd });
+  const res = await fetch(`${API}/api/stt`, { method: "POST", headers: await authed(), body: fd });
   if (!res.ok) throw new Error(`STT ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
 export async function synthesize(text: string): Promise<Blob> {
-  const res = await fetch(`${API}/api/tts`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
+  const res = await fetch(`${API}/api/tts`, { method: "POST", headers: await authed({ "Content-Type": "application/json" }), body: JSON.stringify({ text }) });
   if (!res.ok) throw new Error(`TTS ${res.status}`);
   return res.blob();
 }
 
 export async function resetBrain(): Promise<void> {
-  await fetch(`${API}/api/brain/reset`, { method: "POST" });
+  await fetch(`${API}/api/brain/reset`, { method: "POST", headers: await authed() });
 }
 
 export async function refresh(name?: string): Promise<void> {
-  await fetch(`${API}/api/refresh${name ? `?name=${name}` : ""}`, { method: "POST" });
+  await fetch(`${API}/api/refresh${name ? `?name=${name}` : ""}`, { method: "POST", headers: await authed() });
 }
 
 /** Plays sentences in order; synthesis of the next sentence overlaps playback of the current one. */
