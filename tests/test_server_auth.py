@@ -35,7 +35,11 @@ def test_websocket_requires_the_token():
     with pytest.raises(WebSocketDisconnect):
         with client.websocket_connect("/ws/events"):
             pass
-    with client.websocket_connect(f"/ws/events?token={server.TOKEN}") as ws:
+    with pytest.raises(WebSocketDisconnect):  # a query token is no longer accepted (it would be logged)
+        with client.websocket_connect(f"/ws/events?token={server.TOKEN}"):
+            pass
+    with client.websocket_connect("/ws/events", subprotocols=["jarvis", f"token.{server.TOKEN}"]) as ws:
+        assert ws.accepted_subprotocol == "jarvis"
         assert "alerts" in ws.receive_json()
 
 

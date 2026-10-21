@@ -117,10 +117,14 @@ async def health() -> JSONResponse:
 
 @app.websocket("/ws/events")
 async def ws_events(ws: WebSocket) -> None:
-    if not token_ok(ws.query_params.get("token")):
+    # browsers cannot set headers on a WebSocket, so the token travels as a subprotocol
+    # ("token.<value>"): unlike a ?token= query it never lands in URLs or access logs
+    offered = [p.strip() for p in (ws.headers.get("sec-websocket-protocol") or "").split(",")]
+    supplied = next((p[len("token."):] for p in offered if p.startswith("token.")), None)
+    if not token_ok(supplied):
         await ws.close(code=1008)  # policy violation; before accept, so the handshake is refused
         return
-    await ws.accept()
+    await ws.accept(subprotocol="jarvis")
     q = SNAP.subscribe()
     try:
         await ws.send_json(SNAP.as_dict())

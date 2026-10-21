@@ -23,7 +23,8 @@ export function subscribeSnapshot(onSnapshot: (s: Snapshot) => void, onStatus: (
   let retry = 1000;
   const connect = async () => {
     if (closed) return;
-    ws = new WebSocket(`${WS}?token=${encodeURIComponent(await token())}`);
+    // token as a subprotocol, not in the URL, so it stays out of the backend's access log
+    ws = new WebSocket(WS, ["jarvis", `token.${await token()}`]);
     ws.onopen = () => { retry = 1000; onStatus(true); };
     ws.onmessage = (ev) => { try { onSnapshot(JSON.parse(ev.data) as Snapshot); } catch { /* ignore bad frame */ } };
     ws.onclose = () => { onStatus(false); if (!closed) { setTimeout(() => void connect(), retry); retry = Math.min(retry * 2, 15000); } };
