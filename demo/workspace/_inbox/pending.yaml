@@ -1,0 +1,23 @@
+# What waits on the user (type: decizie) and on other people (type: asteptare).
+# Sessions add a row when they stop on something unresolved and delete it once resolved.
+- project: site
+  type: decizie
+  text: Alege varianta de homepage (A sau B)
+  since: 2026-10-14
+  from: sesiunea site
+  blocks: publicarea site-ului
+- project: site
+  type: asteptare
+  text: Fotografiile echipei de la designer
+  since: 2026-10-17
+  from: designer
+- project: data
+  type: decizie
+  text: Cheia API nouă — cont gratuit acum sau sursa alternativă
+  since: 2026-10-08
+  from: sesiunea meteo
+- project: shop
+  type: asteptare
+  text: Fișierul de stoc de la furnizor
+  since: 2026-10-19
+  from: furnizor

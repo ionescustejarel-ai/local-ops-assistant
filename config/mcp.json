@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "mcp-obsidian-advanced": {
+      "command": "mcp-obsidian-advanced",
+      "args": [],
+      "env": {
+        "OBSIDIAN_VAULT_PATH": "<path-to-your-vault>",
+        "OBSIDIAN_SEARCH_SEMANTIC": "0"
+      }
+    },
+    "postgres": {
+      "command": "<path-to-a-read-only-postgres-mcp>",
+      "args": []
+    }
+  }
+}

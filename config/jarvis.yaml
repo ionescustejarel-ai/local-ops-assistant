@@ -1,0 +1,113 @@
+# Jarvis backend configuration. Example values — point the paths at your own setup.
+# Paths use forward slashes (Windows accepts them). Relative paths resolve from the repo root.
+server:
+  host: 127.0.0.1
+  port: 8020
+tz: Europe/Bucharest
+
+paths:
+  memory_md: demo/workspace/MEMORY.md            # projects table ("## Proiecte ACTIVE")
+  local_memory_dir: demo/workspace
+  vault_root: demo/workspace                     # project notes + _inbox/pending.yaml
+  automations_log_root: demo/workspace/logs      # <YYYY-MM>/<log>.jsonl written by scheduled tasks
+  tasks_script: scripts/collect_tasks.ps1
+
+# refresh intervals (seconds)
+intervals:
+  tasks: 60
+  docker: 60
+  gpu: 15
+  services: 30
+  git: 120
+  projects: 120
+  backup: 600
+  disk: 600
+  calendar: 600
+  gmail: 300
+  deadlines: 600
+  pending: 120
+  vault: 300
+
+tasks:
+  pattern: '^(Ops|Jarvis)'
+  # Task Scheduler name -> automations/logs/<YYYY-MM>/<log>.jsonl
+  log_map:
+    Ops_Daily_Ingest: daily-ingest
+    Ops_Nightly_Sync: nightly-sync
+  # human labels for the UI
+  labels:
+    Ops_Backup: Backup zilnic 21:00
+    Ops_Reranker: Reranker :8009 (memorie)
+    Ops_Dashboard_UI: Tablou web :8011
+    Ops_Daily_Ingest: Ingest zilnic 06:00
+    Ops_Nightly_Sync: Sincronizare nocturnă
+    Jarvis_Backend: Jarvis backend :8020
+    Jarvis_App: Jarvis fereastră
+
+services:
+  - name: reranker
+    url: http://127.0.0.1:8009/health
+    expect: '"status":"ok"'
+    note: fără el căutarea în memorie degradează la vector-only
+  - name: web-ui
+    url: http://127.0.0.1:8011/
+  - name: api
+    url: http://127.0.0.1:8008/health
+    expect: ok
+  - name: n8n
+    url: http://127.0.0.1:5678/healthz
+
+docker:
+  # only these containers raise alerts; the rest are listed as informational
+  watch: [app_api, app_postgres, app_redis, n8n]
+
+disks: ["C:/", "D:/"]
+
+repos:
+  - { name: site, path: C:/work/site, alert_dirty: true }
+  - { name: shop, path: C:/work/shop, alert_dirty: true }
+  - { name: weather, path: C:/work/weather, alert_dirty: false }
+
+# MEMORY.md row (substring of the bold name) -> project note (relative to vault_root, or absolute) -> repo name
+projects:
+  - { key: site, match: Site agenție, note: projects/site.md, repo: site }
+  - { key: shop, match: Magazin online, note: projects/shop.md, repo: shop }
+  - { key: thesis, match: Lucrare de licență, note: projects/thesis.md }
+  - { key: data, match: Pipeline date meteo, note: projects/weather.md, repo: weather }
+  - { key: career, match: Carieră, note: projects/career.md }
+
+calendar:
+  days: 2            # today + tomorrow
+gmail:
+  hours: 48
+  limit: 25
+
+voice:
+  stt:
+    model: large-v3
+    device: cuda
+    device_index: 0
+    compute_type: float16
+    language: ro
+    beam_size: 5
+    # domain words the recogniser should expect (names of your projects, tools, services)
+    initial_prompt: "Jarvis, backup, Docker, commit, reranker, ingest, site, magazin, licență."
+  tts:
+    voice: ro-RO-EmilNeural      # alternativă: ro-RO-AlinaNeural
+    rate: "+5%"
+
+brain:
+  model: sonnet
+  effort: low          # Q&A from the snapshot: latency matters more than reasoning
+  max_turns: 6
+  mcp_config: config/mcp.json
+  persona: config/persona.md
+  cwd: demo/workspace
+  disallowed_tools: ["Edit", "Write", "NotebookEdit", "MultiEdit", "Task", "Agent"]
+  timeout_s: 120
+  # "ce aștepți de la mine / ce e roșu / termene / ce am azi-mâine" answered locally from the
+  # snapshot (jarvis/fastpath.py), no claude -p; false = everything goes to Claude
+  fastpath: true
+  # every finished exchange is appended here (one .md per day) so other Claude sessions
+  # can read what the user decided by voice; Jarvis never reads it back
+  journal_dir: demo/workspace/_inbox/jarvis-conversations

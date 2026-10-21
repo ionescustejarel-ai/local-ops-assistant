@@ -1,0 +1,613 @@
+{
+ "data": {
+  "tasks": [
+   {
+    "name": "Ops_Backup",
+    "state": "Ready",
+    "last_run": "2026-10-21T04:40:58+03:00",
+    "age_s": 46622,
+    "next_run": "2026-10-22T01:38:00+03:00",
+    "result_code": 2147946720,
+    "result_hex": "0x800710E0",
+    "result_ok": false,
+    "result_text": "operator/administrator refused the request",
+    "missed_runs": 0,
+    "trigger": "daily",
+    "interval_s": 86400,
+    "stale": false
+   },
+   {
+    "name": "Ops_Reranker",
+    "state": "Running",
+    "last_run": "2026-10-21T04:33:52+03:00",
+    "age_s": 47048,
+    "next_run": null,
+    "result_code": 267009,
+    "result_hex": "0x00041301",
+    "result_ok": true,
+    "result_text": "running",
+    "missed_runs": 0,
+    "trigger": "logon",
+    "interval_s": null,
+    "stale": false
+   },
+   {
+    "name": "Ops_Daily_Report",
+    "state": "Ready",
+    "last_run": "2026-10-21T15:36:01+03:00",
+    "age_s": 7319,
+    "next_run": "2026-10-21T18:36:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 10800,
+    "stale": false
+   },
+   {
+    "name": "Ops_Price_Feed",
+    "state": "Ready",
+    "last_run": "2026-10-21T13:58:01+03:00",
+    "age_s": 13199,
+    "next_run": "2026-10-21T19:58:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 21600,
+    "stale": false
+   },
+   {
+    "name": "Ops_Nightly_Sync",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:03:01+03:00",
+    "age_s": 2099,
+    "next_run": "2026-10-21T17:33:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 1800,
+    "stale": false
+   },
+   {
+    "name": "Ops_News_Digest",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:19:01+03:00",
+    "age_s": 1139,
+    "next_run": "2026-10-21T17:34:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 900,
+    "stale": false
+   },
+   {
+    "name": "Ops_Precheck",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:21:01+03:00",
+    "age_s": 1019,
+    "next_run": "2026-10-21T17:51:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 1800,
+    "stale": false
+   },
+   {
+    "name": "Ops_Reference_Data",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:16:01+03:00",
+    "age_s": 1319,
+    "next_run": "2026-10-21T17:46:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 1800,
+    "stale": false
+   },
+   {
+    "name": "Ops_Dashboard_UI",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:21:01+03:00",
+    "age_s": 1019,
+    "next_run": "2026-10-21T17:31:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "logon",
+    "interval_s": null,
+    "stale": false
+   },
+   {
+    "name": "Ops_Price_Snapshot",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:17:01+03:00",
+    "age_s": 1259,
+    "next_run": "2026-10-21T17:32:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 900,
+    "stale": false
+   },
+   {
+    "name": "Ops_Daily_Ingest",
+    "state": "Ready",
+    "last_run": "2026-10-21T12:18:01+03:00",
+    "age_s": 19199,
+    "next_run": "2026-10-22T12:18:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "daily",
+    "interval_s": 86400,
+    "stale": false,
+    "log": {
+     "started_utc": "2026-09-23T04:40:01Z",
+     "idle": false,
+     "failed": false,
+     "rcs": {
+      "ingest_rc": 0,
+      "elo_rc": 0
+     },
+     "summary": "records: 15956 in ledger (+0 new, ~0 changed), unresolved: 0, last record: 2026-08-26 | index v0: 31907 rows, 313 stations"
+    }
+   },
+   {
+    "name": "Ops_Closing_Capture",
+    "state": "Ready",
+    "last_run": "2026-10-21T17:08:01+03:00",
+    "age_s": 1799,
+    "next_run": "2026-10-21T17:38:00+03:00",
+    "result_code": 0,
+    "result_hex": "0x00000000",
+    "result_ok": true,
+    "result_text": "ok",
+    "missed_runs": 0,
+    "trigger": "time",
+    "interval_s": 1800,
+    "stale": false
+   }
+  ],
+  "docker": [
+   {
+    "name": "app_api",
+    "image": "app/api:latest",
+    "status": "Up 13 hours (healthy)",
+    "up": true,
+    "health": "healthy",
+    "ok": true,
+    "ports": [
+     "8008"
+    ],
+    "watched": true
+   },
+   {
+    "name": "app_postgres",
+    "image": "pgvector/pgvector:pg16",
+    "status": "Up 13 hours (healthy)",
+    "up": true,
+    "health": "healthy",
+    "ok": true,
+    "ports": [
+     "5432"
+    ],
+    "watched": true
+   },
+   {
+    "name": "app_redis",
+    "image": "redis:7-alpine",
+    "status": "Up 13 hours",
+    "up": true,
+    "health": null,
+    "ok": true,
+    "ports": [
+     "6379"
+    ],
+    "watched": true
+   },
+   {
+    "name": "n8n",
+    "image": "n8nio/n8n:latest",
+    "status": "Up 13 hours",
+    "up": true,
+    "health": null,
+    "ok": true,
+    "ports": [
+     "5678"
+    ],
+    "watched": true
+   },
+   {
+    "name": "old_experiment",
+    "image": "python:3.12-slim",
+    "status": "Exited (137) 4 months ago",
+    "up": false,
+    "health": null,
+    "ok": false,
+    "ports": [],
+    "watched": false
+   }
+  ],
+  "gpu": [
+   {
+    "index": 0,
+    "name": "NVIDIA GeForce RTX 4090",
+    "mem_used_mib": 2640,
+    "mem_total_mib": 24564,
+    "mem_pct": 10.7,
+    "util_pct": 30,
+    "temp_c": 48
+   },
+   {
+    "index": 1,
+    "name": "NVIDIA GeForce RTX 4090",
+    "mem_used_mib": 0,
+    "mem_total_mib": 24564,
+    "mem_pct": 0.0,
+    "util_pct": 0,
+    "temp_c": 36
+   }
+  ],
+  "services": [
+   {
+    "name": "reranker",
+    "url": "http://127.0.0.1:8009/health",
+    "ok": true,
+    "status": 200,
+    "latency_ms": 4,
+    "error": null
+   },
+   {
+    "name": "web-ui",
+    "url": "http://127.0.0.1:8011/",
+    "ok": true,
+    "status": 200,
+    "latency_ms": 11,
+    "error": null
+   },
+   {
+    "name": "api",
+    "url": "http://127.0.0.1:8008/health",
+    "ok": true,
+    "status": 200,
+    "latency_ms": 6,
+    "error": null
+   },
+   {
+    "name": "n8n",
+    "url": "http://127.0.0.1:5678/healthz",
+    "ok": false,
+    "status": null,
+    "latency_ms": 2001,
+    "error": "ConnectTimeout"
+   }
+  ],
+  "backup": {
+   "root": "G:/My Drive/Backups",
+   "mounted": true,
+   "error": null,
+   "run_at": "2026-10-21 01:42",
+   "status": "FAILED",
+   "failures": [
+    "shop: bundle rc 128"
+   ],
+   "warnings": [],
+   "age_h": 15.9
+  },
+  "disk": [
+   {
+    "path": "C:/",
+    "total_gb": 1862.0,
+    "free_gb": 412.3,
+    "used_pct": 77.9
+   },
+   {
+    "path": "D:/",
+    "total_gb": 3726.0,
+    "free_gb": 1904.6,
+    "used_pct": 48.9
+   }
+  ],
+  "git": [
+   {
+    "name": "site",
+    "path": "C:/work/site",
+    "branch": "redesign",
+    "dirty": 3,
+    "changed": [
+     "index.html",
+     "styles.css",
+     "img/team.jpg"
+    ],
+    "last_commit": {
+     "hash": "a41c09e",
+     "date": "2026-10-20T17:38:00+03:00",
+     "subject": "feat: variant B hero section"
+    },
+    "last_commit_age_days": 1,
+    "error": null,
+    "alert_dirty": true
+   },
+   {
+    "name": "shop",
+    "path": "C:/work/shop",
+    "branch": "main",
+    "dirty": 0,
+    "changed": [],
+    "last_commit": {
+     "hash": "77d2b10",
+     "date": "2026-10-17T17:38:00+03:00",
+     "subject": "fix: stock import skips empty SKUs"
+    },
+    "last_commit_age_days": 4,
+    "error": null,
+    "alert_dirty": true
+   }
+  ],
+  "projects": [
+   {
+    "key": "site",
+    "label": "Site agenție",
+    "repo": "site",
+    "memory": {
+     "name": "Site agenție",
+     "path_hint": "C:\\work\\site\\",
+     "status_raw": "Redesign homepage, două variante A/B pe preview. 🔴 Blocant = fotografiile echipei de la designer. ⛔ nu se publică nimic fără OK pe textul final; ⛔ formularul de contact NU se schimbă până la lansare. ⚠️ certificatul SSL expiră în noiembrie. **NEXT: alegi varianta de homepage.** Detaliu: nota proiectului",
+     "next": "alegi varianta de homepage",
+     "blockers": [
+      "fotografiile echipei de la designer"
+     ],
+     "rules": [
+      "nu se publică nimic fără OK pe textul final",
+      "formularul de contact NU se schimbă până la lansare"
+     ],
+     "cautions": [],
+     "done": false
+    },
+    "note": {
+     "last_session": "2026-10-14",
+     "last_session_title": "RESUME HOOK — două variante de homepage pe preview",
+     "sessions": 1,
+     "next": "alegi varianta de homepage, apoi publicăm doar varianta aleasă"
+    },
+    "note_path": "demo/workspace/projects/site.md",
+    "next": "alegi varianta de homepage"
+   },
+   {
+    "key": "shop",
+    "label": "Magazin online",
+    "repo": "shop",
+    "memory": {
+     "name": "Magazin online",
+     "path_hint": "C:\\work\\shop\\",
+     "status_raw": "Catalog 340 produse. ✅ plăți live. **NEXT: importul de stoc de la furnizor.** [shop](shop.md)",
+     "next": "importul de stoc de la furnizor",
+     "blockers": [],
+     "rules": [],
+     "cautions": [],
+     "done": true
+    },
+    "note": {
+     "last_session": "2026-10-17",
+     "last_session_title": "RESUME HOOK — plăți live",
+     "sessions": 1,
+     "next": "importul de stoc din fișierul furnizorului (CSV, 340 produse)"
+    },
+    "note_path": "demo/workspace/projects/shop.md",
+    "next": "importul de stoc de la furnizor"
+   },
+   {
+    "key": "thesis",
+    "label": "Lucrare de licență",
+    "repo": null,
+    "memory": {
+     "name": "Lucrare de licență",
+     "path_hint": null,
+     "status_raw": "Capitolul 2 trimis profesorului. ⚠️ bibliografia are 3 surse neverificate. NEXT = corecturile la capitolul 2 (feedback primit joi); apoi capitolul 3. Detaliu: x",
+     "next": "corecturile la capitolul 2 (feedback primit joi); apoi capitolul 3",
+     "blockers": [],
+     "rules": [],
+     "cautions": [],
+     "done": false
+    },
+    "note": {
+     "last_session": "2026-10-16",
+     "last_session_title": "capitolul 2 trimis",
+     "sessions": 1,
+     "next": "corecturile la capitolul 2 după feedback-ul profesorului"
+    },
+    "note_path": "demo/workspace/projects/thesis.md",
+    "next": "corecturile la capitolul 2 (feedback primit joi); apoi capitolul 3"
+   },
+   {
+    "key": "data",
+    "label": "Pipeline date meteo",
+    "repo": "weather",
+    "memory": {
+     "name": "Pipeline date meteo",
+     "path_hint": "C:\\work\\weather\\",
+     "status_raw": "Ingest zilnic 06:00 LIVE. 🔴 Blocant: API-ul sursă cere cheie nouă din noiembrie (fix = cont gratuit nou). ⛔ datele brute nu se șterg.",
+     "next": null,
+     "blockers": [
+      "API-ul sursă cere cheie nouă din noiembrie (fix = cont gratuit nou)"
+     ],
+     "rules": [
+      "datele brute nu se șterg"
+     ],
+     "cautions": [],
+     "done": false
+    },
+    "note": {
+     "last_session": "2026-09-23",
+     "last_session_title": "RESUME HOOK — cheia API expiră în noiembrie",
+     "sessions": 3,
+     "next": "(decizia utilizatorului): cont gratuit nou acum sau migrare pe sursa alternativă"
+    },
+    "note_path": "demo/workspace/projects/weather.md",
+    "next": "(decizia utilizatorului): cont gratuit nou acum sau migrare pe sursa alternativă"
+   },
+   {
+    "key": "career",
+    "label": "Carieră",
+    "repo": null,
+    "memory": {
+     "name": "Carieră",
+     "path_hint": null,
+     "status_raw": "CV actualizat. **NEXT: după 24.10 trimit primele 3 aplicații.** [cv](cv.md)",
+     "next": "după 24.10 trimit primele 3 aplicații",
+     "blockers": [],
+     "rules": [],
+     "cautions": [],
+     "done": false
+    },
+    "note": {
+     "last_session": "2026-10-20",
+     "last_session_title": "RESUME HOOK — CV actualizat",
+     "sessions": 1,
+     "next": "trimit primele 3 aplicații după 24.10"
+    },
+    "note_path": "demo/workspace/projects/career.md",
+    "next": "după 24.10 trimit primele 3 aplicații"
+   }
+  ],
+  "calendar": [
+   {
+    "summary": "Call cu designerul",
+    "start": "2026-10-21T11:00:00+03:00",
+    "end": "2026-10-21T11:30:00+03:00",
+    "all_day": false,
+    "location": null
+   },
+   {
+    "summary": "Consultație licență",
+    "start": "2026-10-22T14:00:00+03:00",
+    "end": null,
+    "all_day": false,
+    "location": "Sala 204"
+   }
+  ],
+  "gmail": {
+   "unread": 4,
+   "hours": 48,
+   "items": [
+    {
+     "from": "Furnizor SRL",
+     "subject": "Fișierul de stoc pentru octombrie",
+     "date": "2026-10-21T17:38:00+03:00"
+    },
+    {
+     "from": "Registrar",
+     "subject": "Domeniul expiră în 30 de zile",
+     "date": "2026-10-21T12:38:00+03:00"
+    }
+   ]
+  },
+  "deadlines": [
+   {
+    "label": "Predarea capitolului 2",
+    "project": "thesis",
+    "date": "2026-10-28",
+    "days_left": 7,
+    "note": null,
+    "gate": false,
+    "condition": null
+   },
+   {
+    "label": "Lansarea noului site",
+    "project": "site",
+    "date": "2026-11-03",
+    "days_left": 13,
+    "note": null,
+    "gate": false,
+    "condition": null
+   },
+   {
+    "label": "Verdict test A/B homepage",
+    "project": "site",
+    "date": "2026-11-15",
+    "days_left": 25,
+    "note": null,
+    "gate": true,
+    "condition": "≥1000 vizite pe variantă; până atunci nu se citește rata de conversie"
+   }
+  ],
+  "pending": [
+   {
+    "id": "pending:2:Cheia API nouă — cont gratuit acum sau s",
+    "project": "data",
+    "type": "decizie",
+    "text": "Cheia API nouă — cont gratuit acum sau sursa alternativă",
+    "since": "2026-10-08",
+    "age_days": 13,
+    "from": "sesiunea meteo",
+    "blocks": null,
+    "severity": "yellow"
+   },
+   {
+    "id": "pending:0:Alege varianta de homepage (A sau B)",
+    "project": "site",
+    "type": "decizie",
+    "text": "Alege varianta de homepage (A sau B)",
+    "since": "2026-10-14",
+    "age_days": 7,
+    "from": "sesiunea site",
+    "blocks": "publicarea site-ului",
+    "severity": "yellow"
+   },
+   {
+    "id": "pending:1:Fotografiile echipei de la designer",
+    "project": "site",
+    "type": "așteptare",
+    "text": "Fotografiile echipei de la designer",
+    "since": "2026-10-17",
+    "age_days": 4,
+    "from": "designer",
+    "blocks": null,
+    "severity": "info"
+   },
+   {
+    "id": "pending:3:Fișierul de stoc de la furnizor",
+    "project": "shop",
+    "type": "așteptare",
+    "text": "Fișierul de stoc de la furnizor",
+    "since": "2026-10-19",
+    "age_days": 2,
+    "from": "furnizor",
+    "blocks": null,
+    "severity": "info"
+   }
+  ],
+  "vault": {
+   "memory_md": "MEMORY.md",
+   "bytes": 2210,
+   "kb": 2.2,
+   "over_limit": false,
+   "limit_kb": 17,
+   "error": null
+  }
+ }
+}

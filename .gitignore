@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+config/secrets.yaml
+data/
+app/node_modules/
+app/dist/
+app/dist-electron/
+app/release/
+demo/workspace/_inbox/jarvis-conversations/

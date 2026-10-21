@@ -1,0 +1,36 @@
+{
+  "name": "jarvis-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Jarvis desktop shell: monitoring board + Romanian push-to-talk assistant",
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && npm run build:electron && cross-env JARVIS_DEV_URL=http://localhost:5173 electron .\"",
+    "build": "tsc -b && vite build && npm run build:electron",
+    "build:electron": "tsc -p electron/tsconfig.json",
+    "start": "electron .",
+    "test": "vitest run",
+    "lint": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^39.0.0",
+    "jsdom": "^30.0.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10",
+    "wait-on": "^8.0.3"
+  }
+}

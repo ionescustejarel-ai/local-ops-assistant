@@ -1,0 +1,5 @@
+{"Names": "app_api", "Image": "app/api:latest", "State": "running", "Status": "Up 13 hours (healthy)", "HealthStatus": "healthy", "Ports": "0.0.0.0:8008->8000/tcp, [::]:8008->8000/tcp"}
+{"Names": "app_postgres", "Image": "pgvector/pgvector:pg16", "State": "running", "Status": "Up 13 hours (healthy)", "HealthStatus": "healthy", "Ports": "0.0.0.0:5432->5432/tcp"}
+{"Names": "app_redis", "Image": "redis:7-alpine", "State": "running", "Status": "Up 13 hours", "HealthStatus": "", "Ports": "0.0.0.0:6379->6379/tcp"}
+{"Names": "n8n", "Image": "n8nio/n8n:latest", "State": "running", "Status": "Up 13 hours", "HealthStatus": "", "Ports": "0.0.0.0:5678->5678/tcp"}
+{"Names": "old_experiment", "Image": "python:3.12-slim", "State": "exited", "Status": "Exited (137) 4 months ago", "HealthStatus": "", "Ports": ""}

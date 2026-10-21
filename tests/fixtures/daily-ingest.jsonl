@@ -1,0 +1,3 @@
+{"task":"daily-ingest","started_utc":"2026-09-21T17:49:36Z","ingest_rc":0,"ingest_summary":"records: 15956 in ledger (+0 new, ~0 changed), unresolved: 0, last record: 2026-08-26","elo_rc":0,"elo_summary":"index v0: 31907 rows, 313 stations"}
+{"task":"daily-ingest","started_utc":"2026-09-22T04:40:02Z","ingest_rc":0,"ingest_summary":"records: 15956 in ledger (+0 new, ~0 changed), unresolved: 0, last record: 2026-08-26","elo_rc":0,"elo_summary":"index v0: 31907 rows, 313 stations"}
+{"task":"daily-ingest","started_utc":"2026-09-23T04:40:01Z","ingest_rc":0,"ingest_summary":"records: 15956 in ledger (+0 new, ~0 changed), unresolved: 0, last record: 2026-08-26","elo_rc":0,"elo_summary":"index v0: 31907 rows, 313 stations"}
